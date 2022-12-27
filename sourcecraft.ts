@@ -105,8 +105,12 @@ for (
   await $`git push origin ${gameVersion} --force`;
   await $`git checkout ${mainBranch}`;
 
-  await Deno.remove("./.gradle");
-  await Deno.remove("./build");
+  try {
+    await Deno.remove("./.gradle");
+    await Deno.remove("./build");
+    // deno-lint-ignore no-empty
+  } catch (_) {
+  }
 }
 
 await Deno.remove(tempDir, { recursive: true });
