@@ -21,9 +21,9 @@ const DECOMPILE_VERSIONS =
         findVersion.version === version.gameVersion
       )?.stable;
     } else {
-      return IGNORED_VERSIONS.indexOf(version.gameVersion) === -1;
+      return true;
     }
-  })).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
+  })).filter((e: typeof IGNORED_VERSIONS[number]) => !IGNORED_VERSIONS.includes(e)).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
     return b.gameVersion.localeCompare(a.gameVersion);
   });
 
