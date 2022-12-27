@@ -10,6 +10,7 @@ on:
 
 jobs:
   decompile:
+    if: github.repository != 'Jamalam360/sourcecraft'
     runs-on: 'ubuntu-20.04'
     env:
       ONLY_INCLUDE_STABLE_VERSIONS: true
