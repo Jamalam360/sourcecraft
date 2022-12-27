@@ -32,6 +32,8 @@ const versionsResponse = (await fetch(
   } else {
     return true;
   }
+}).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
+  return b.gameVersion.localeCompare(a.gameVersion);
 });
 
 const versions: Version[] = (await Promise.all(
