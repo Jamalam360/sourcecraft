@@ -16,14 +16,14 @@ const DECOMPILE_VERSIONS =
   (Deno.env.get("DECOMPILE_VERSIONS")?.split(",").map((version) => version.trim()) || (await fetch(
     "https://meta.quiltmc.org/v3/versions/quilt-mappings",
   ).then((res) => res.json())).filter((version: { gameVersion: string }) => {
-    if (ONLY_INCLUDE_STABLE_VERSIONS) {
+    if (ONLY_INCLUDE_STABLE_VERSIONS && !IGNORED_VERSIONS.includes(version.gameVersion)) {
       return gameVersions.find((findVersion: { version: string }) =>
         findVersion.version === version.gameVersion
       )?.stable;
     } else {
-      return true;
+      return !IGNORED_VERSIONS.includes(version.gameVersion);
     }
-  })).filter((e: typeof IGNORED_VERSIONS[number]) => !IGNORED_VERSIONS.includes(e)).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
+  })).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
     return b.gameVersion.localeCompare(a.gameVersion);
   });
 
