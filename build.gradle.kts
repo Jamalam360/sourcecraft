@@ -19,3 +19,13 @@ dependencies {
     modImplementation("org.quiltmc:quilt-loader:${versions["loader"]}")
     modImplementation("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${versions["qfapi"]}")
 }
+
+if (!versions["mappings"]!!.contains("1.19")) {
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute(module("org.quiltmc.unpick:unpick-cli:2.2.0"))
+                    .using(module("net.fabricmc.unpick:unpick-cli:2.3.0"))
+                    .because("It's gone")
+        }
+    }
+}
