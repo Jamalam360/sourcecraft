@@ -103,7 +103,7 @@ for (
 
   await $`unzip ${tempDir}/${sources} -d .`;
   await $`git add .`;
-  await $`git commit -m "Update sources for ${gameVersion}"`;
+  await $`git commit -m "[Sourecraft Bot | ${new Date().toLocaleDateString()}] Update sources for ${gameVersion}"`;
   await $`git push origin ${gameVersion} --force`;
   await $`git checkout ${mainBranch}`;
 
