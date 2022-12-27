@@ -10,6 +10,16 @@ Sourcecraft is a simple-to-use Minecraft decompiler, run on GitHub actions.
 3. Sourcecraft will automatically run its GitHub action periodically, generating decompiled
    Minecraft sources and pushing them to a new branch for each version.
 
+### Environment Variables
+
+These can be edited in the GitHub action workflow file, at the path `.github/workflows/decompile.yml`.
+
+| Name | Description | Default |
+| --- | --- | --- |
+| `ONLY_INCLUDE_STABLE_VERSIONS` | Whether to only decompile stable versions. If set to `false`, snapshots, pre-releases, and release-candidates will be decompiled as well. | `true` |
+| `IGNORED_VERSIONS` | A comma seperated list of versions that will not be decompiled. This overrides the `DECOMPILE_VERSIONS` flag. | `[]` |
+| `DECOMPILE_VERSIONS` | A comma seperated list of versions that will be decompiled. This is ignored if `IGNORED_VERSIONS` is not empty. `ONLY_INCLUDE_STABLE_VERSIONS` will be bypassed if this is given | All versions supported by Quilt mappings (gathered from [meta.quiltmc.org](https://meta.quiltmc.org)). |
+
 ## Why?
 
 I often have ideas on-the-go. Whether it be how to fix a bug or how to implement a feature. If I

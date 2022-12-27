@@ -13,7 +13,12 @@ jobs:
     if: github.repository != 'Jamalam360/sourcecraft'
     runs-on: 'ubuntu-20.04'
     env:
+      # No snapshots, pre-releases, or release-candidates:
       ONLY_INCLUDE_STABLE_VERSIONS: true
+      # Explicitly ignore 1.19.1, as it is not supported by intermediary-v2 Quilt Mappings:
+      IGNORED_VERSIONS: "1.19.1"
+      # All versions that Quilt Mappings are available for: 
+      DECOMPILE_VERSIONS: ""
 
     steps:
       - name: Clone repository

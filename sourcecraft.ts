@@ -3,6 +3,22 @@ import { build$, CommandBuilder } from "https://deno.land/x/dax@0.17.0/mod.ts";
 
 const ONLY_INCLUDE_STABLE_VERSIONS =
   (Deno.env.get("ONLY_INCLUDE_STABLE_VERSIONS") || "true") === "true";
+const IGNORED_VERSIONS = (Deno.env.get("IGNORED_VERSIONS")?.split(",") || [])
+  .map((version) => version.trim());
+const DECOMPILE_VERSIONS =
+  (Deno.env.get("DECOMPILE_VERSIONS")?.split(",").map((version) => version.trim()) || (await fetch(
+    "https://meta.quiltmc.org/v3/versions/quilt-mappings",
+  ).then((res) => res.json())).filter((version: { gameVersion: string }) => {
+    if (ONLY_INCLUDE_STABLE_VERSIONS) {
+      return gameVersions.find((findVersion: { version: string }) =>
+        findVersion.version === version.gameVersion
+      )?.stable;
+    } else {
+      return IGNORED_VERSIONS.indexOf(version.gameVersion) === -1;
+    }
+  })).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
+    return b.gameVersion.localeCompare(a.gameVersion);
+  });
 
 const builder = new CommandBuilder().quiet("stdout").cwd(Deno.cwd())
   .printCommand();
@@ -22,25 +38,11 @@ const gameVersions = await fetch(
   "https://meta.quiltmc.org/v3/versions/game",
 ).then((res) => res.json());
 
-const versionsResponse = (await fetch(
-  "https://meta.quiltmc.org/v3/versions/quilt-mappings",
-).then((res) => res.json())).filter((version: { gameVersion: string }) => {
-  if (ONLY_INCLUDE_STABLE_VERSIONS) {
-    return gameVersions.find((findVersion: { version: string }) =>
-      findVersion.version === version.gameVersion
-    )?.stable;
-  } else {
-    return true;
-  }
-}).sort((a: { gameVersion: string }, b: { gameVersion: string }) => {
-  return b.gameVersion.localeCompare(a.gameVersion);
-});
-
 const versions: Version[] = (await Promise.all(
-  versionsResponse
+  DECOMPILE_VERSIONS
     .filter(
       (version: { gameVersion: string }, index: number) =>
-        versionsResponse.findIndex(
+      DECOMPILE_VERSIONS.findIndex(
           (findVersion: { gameVersion: string }) =>
             findVersion.gameVersion === version.gameVersion,
         ) === index,
@@ -103,7 +105,9 @@ for (
 
   await $`unzip ${tempDir}/${sources} -d .`;
   await $`git add .`;
-  await $`git commit -m "[Sourecraft Bot | ${new Date().toLocaleDateString()}] Update sources for ${gameVersion}"`;
+  await $`git commit -m "[Sourecraft Bot | ${
+    new Date().toLocaleDateString()
+  }] Update sources for ${gameVersion}"`;
   await $`git push origin ${gameVersion} --force`;
   await $`git checkout ${mainBranch}`;
 
