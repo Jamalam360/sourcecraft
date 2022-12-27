@@ -17,8 +17,8 @@ jobs:
       ONLY_INCLUDE_STABLE_VERSIONS: true
       # Explicitly ignore 1.19.1, as it is not supported by intermediary-v2 Quilt Mappings:
       IGNORED_VERSIONS: "1.19.1"
-      # All versions that Quilt Mappings are available for: 
-      DECOMPILE_VERSIONS: ""
+      # Set this if you only want to decompile certain versions. It overrides the above two variables.
+      #DECOMPILE_VERSIONS: ""
 
     steps:
       - name: Clone repository
