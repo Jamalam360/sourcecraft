@@ -1,6 +1,13 @@
 // import { $ } from "npm:zx";
 import { build$, CommandBuilder } from "https://deno.land/x/dax@0.17.0/mod.ts";
 
+const loaderVersion: string = await fetch(
+  "https://meta.quiltmc.org/v3/versions/loader",
+).then((res) => res.json()).then((json) => json[0].version);
+const gameVersions = await fetch(
+  "https://meta.quiltmc.org/v3/versions/game",
+).then((res) => res.json());
+
 const ONLY_INCLUDE_STABLE_VERSIONS =
   (Deno.env.get("ONLY_INCLUDE_STABLE_VERSIONS") || "true") === "true";
 const IGNORED_VERSIONS = (Deno.env.get("IGNORED_VERSIONS")?.split(",") || [])
@@ -30,13 +37,6 @@ interface Version {
   loaderVersion: string;
   quiltedFabricApiVersion: string;
 }
-
-const loaderVersion: string = await fetch(
-  "https://meta.quiltmc.org/v3/versions/loader",
-).then((res) => res.json()).then((json) => json[0].version);
-const gameVersions = await fetch(
-  "https://meta.quiltmc.org/v3/versions/game",
-).then((res) => res.json());
 
 const versions: Version[] = (await Promise.all(
   DECOMPILE_VERSIONS
