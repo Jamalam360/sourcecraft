@@ -17,13 +17,13 @@ These can be edited in the GitHub action workflow file, at the path `.github/wor
 | Name | Description | Default |
 | --- | --- | --- |
 | `ONLY_INCLUDE_STABLE_VERSIONS` | Whether to only decompile stable versions. If set to `false`, snapshots, pre-releases, and release-candidates will be decompiled as well. | `true` |
-| `IGNORED_VERSIONS` | A comma seperated list of versions that will not be decompiled. This overrides the `DECOMPILE_VERSIONS` flag. | `[]` |
-| `DECOMPILE_VERSIONS` | A comma seperated list of versions that will be decompiled. This is ignored if `IGNORED_VERSIONS` is not empty. `ONLY_INCLUDE_STABLE_VERSIONS` will be bypassed if this is given | All versions supported by Quilt mappings (gathered from [meta.quiltmc.org](https://meta.quiltmc.org)). |
+| `IGNORED_VERSIONS` | A comma separated list of versions that will not be decompiled. This overrides the `DECOMPILE_VERSIONS` flag. | `[]` |
+| `DECOMPILE_VERSIONS` | A comma separated list of versions that will be decompiled. This is ignored if `IGNORED_VERSIONS` is not empty. `ONLY_INCLUDE_STABLE_VERSIONS` will be bypassed if this is given | All versions supported by Quilt mappings (gathered from [meta.quiltmc.org](https://meta.quiltmc.org)). |
 
 ## Why?
 
 I often have ideas on-the-go. Whether it be how to fix a bug or how to implement a feature. If I
-can't look at the sourcecode immediately, that idea is pretty much gone! I need a way to browse it
+can't look at the source code immediately, that idea is pretty much gone! I need a way to browse it
 on my phone.
 
 There are other tools that generate decompiled Minecraft sources, but they were _too configurable_

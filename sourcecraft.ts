@@ -1,10 +1,17 @@
-// import { $ } from "npm:zx";
 import { build$, CommandBuilder } from "https://deno.land/x/dax@0.17.0/mod.ts";
 
-const loaderVersion: string = await fetch(
+const USER_AGENT = "Jamalam360/sourcecraft (jamalam#0001 / james@jamalam.tech)";
+
+async function fetch(url: string | Request | URL, init?: RequestInit): Promise<Response> {
+  const headers = new Headers(init?.headers);
+  headers.set("User-Agent", USER_AGENT);
+  return await globalThis.fetch(url, { ...init, headers });
+}
+
+const LOADER_VERSION: string = await fetch(
   "https://meta.quiltmc.org/v3/versions/loader",
 ).then((res) => res.json()).then((json) => json[0].version);
-const gameVersions = await fetch(
+const GAME_VERSIONS = await fetch(
   "https://meta.quiltmc.org/v3/versions/game",
 ).then((res) => res.json());
 
@@ -17,7 +24,7 @@ const DECOMPILE_VERSIONS =
     "https://meta.quiltmc.org/v3/versions/quilt-mappings",
   ).then((res) => res.json())).filter((version: { gameVersion: string }) => {
     if (ONLY_INCLUDE_STABLE_VERSIONS && !IGNORED_VERSIONS.includes(version.gameVersion)) {
-      return gameVersions.find((findVersion: { version: string }) =>
+      return GAME_VERSIONS.find((findVersion: { version: string }) =>
         findVersion.version === version.gameVersion
       )?.stable;
     } else {
@@ -68,7 +75,7 @@ const versions: Version[] = (await Promise.all(
         return {
           gameVersion,
           mappingsVersion,
-          loaderVersion,
+          LOADER_VERSION,
           quiltedFabricApiVersion,
         };
       },
