@@ -57,13 +57,15 @@ const versions: Version[] = (await Promise.all(
     .map(
       async (metaVersion: { gameVersion: string; version: string }) => {
         const { gameVersion, version: mappingsVersion } = metaVersion;
+        const mrUrl = new URL("https://api.modrinth.com/v2/project/qsl/version");
+        mrUrl.searchParams.set("loaders", JSON.stringify(["quilt"]));
+        mrUrl.searchParams.set("game_versions", JSON.stringify([gameVersion]));
 
-        //TODO: Modrinth user agent
-        const quiltedFabricApiVersion = await fetch(
-          `https://api.modrinth.com/v2/project/qsl/version?loaders=["quilt"]&game_versions=["${gameVersion}"]`,
-        ).then((res) => res.json()).then((json) =>
-          json[0]?.version_number || undefined
-        );
+        const quiltedFabricApiVersion = await fetch(mrUrl)
+          .then((res) => res.json())
+          .then((json) =>
+            json[0]?.version_number || undefined
+          );
 
         if (quiltedFabricApiVersion === undefined) {
           console.warn(
