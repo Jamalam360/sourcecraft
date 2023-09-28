@@ -42,7 +42,7 @@ interface Version {
   gameVersion: string;
   mappingsVersion: string;
   loaderVersion: string;
-  quiltedFabricApiVersion: string;
+  quiltedFabricApiVersion: string | null;
 }
 
 const versions: Version[] = (await Promise.all(
@@ -61,7 +61,7 @@ const versions: Version[] = (await Promise.all(
         mrUrl.searchParams.set("loaders", JSON.stringify(["quilt"]));
         mrUrl.searchParams.set("game_versions", JSON.stringify([gameVersion]));
 
-        const quiltedFabricApiVersion = await fetch(mrUrl)
+        let quiltedFabricApiVersion = await fetch(mrUrl)
           .then((res) => res.json())
           .then((json) =>
             json[0]?.version_number || undefined
@@ -69,9 +69,9 @@ const versions: Version[] = (await Promise.all(
 
         if (quiltedFabricApiVersion === undefined) {
           console.warn(
-            `No version of Quilted Fabric API for ${gameVersion} found`,
+            `No version of Quilted Fabric API for ${gameVersion} found, not using one`,
           );
-          return;
+          quiltedFabricApiVersion = null;
         }
 
         return {

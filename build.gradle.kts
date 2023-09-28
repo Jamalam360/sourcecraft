@@ -17,7 +17,10 @@ dependencies {
     minecraft("com.mojang:minecraft:${versions["minecraft"]}")
     mappings("org.quiltmc:quilt-mappings:${versions["mappings"]}:intermediary-v2")
     modImplementation("org.quiltmc:quilt-loader:${versions["loader"]}")
-    modImplementation("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${versions["qfapi"]}")
+
+    if (versions["qfapi"] != "null") {
+        modImplementation("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${versions["qfapi"]}")
+    }
 }
 
 if (!versions["mappings"]!!.contains("1.19")) {
